@@ -1,5 +1,5 @@
 #  falab - free algorithm lab 
-#  Copyright (C) 2012 luolongzhi  罗龙智 (Chengdu, China)
+#  Copyright © 2012 luolongzhi  罗龙智 (Chengdu, China)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ CFLAGS      += -I./src -I$(INCLUDEDIR)
 TARGET       = $(PNAME)
 TLIBA        = lib$(PNAME).a
 TLIBSO       = lib$(PNAME).so.$(VERSION_MAJOR)
-MANFILES     = $(shell ls ./man/man1/*)
+MANFILES     = $(shell ls ./man/man[0-9]/*.[0-9])
 MANGZFILES   = $(patsubst %,%.gz,$(MANFILES))
 CSRCFILES    = $(shell ls ./src/frontend/*.c)
 CSRCLIBFILES = $(shell ls ./src/lib$(PNAME)/*.c)

@@ -33,10 +33,10 @@ extern "C"
 {
 #endif
 
-//typedef unsigned uintptr_t;
+// typedef unsigned uintptr_t;
 
-#define FA_AACENC_MPEG_VER_DEF   1
-#define FA_AACENC_OBJ_TYPE_DEF   2
+#define FA_AACENC_MPEG_VER_DEF 1
+#define FA_AACENC_OBJ_TYPE_DEF 2
 
     /*
         For you attention:

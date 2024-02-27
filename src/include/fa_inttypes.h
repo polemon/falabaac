@@ -56,55 +56,55 @@ extern "C"
 
 #ifdef __GNUC__
 #ifndef INT64_MAX
-#define INT64_MAX 9223372036854775807LL
+#   define INT64_MAX 9223372036854775807LL
 #endif
 #else
-#define INT64_MAX 9223372036854775807i64
+#   define INT64_MAX 9223372036854775807i64
 #endif
 #ifdef __GNUC__
 #ifndef INT64_MIN
-#define INT64_MIN  (-9223372036854775807LL - 1)
+#   define INT64_MIN  (-9223372036854775807LL - 1)
 #endif
 #else
-#define INT64_MIN  (-9223372036854775807i64 - 1)
+#   define INT64_MIN  (-9223372036854775807i64 - 1)
 #endif
 
 #ifndef INT8_MAX
-#define INT8_MAX 127
+#   define INT8_MAX 127
 #endif
 #ifndef INT8_MIN
-#define INT8_MIN (-127 - 1)
+#   define INT8_MIN (-127 - 1)
 #endif
 
 #ifndef INT16_MAX
-#define INT16_MAX 32767
+#   define INT16_MAX 32767
 #endif
 #ifndef INT16_MIN
-#define INT16_MIN (-32767 - 1)
+#   define INT16_MIN (-32767 - 1)
 #endif
 
 #ifndef INT32_MAX
-#define INT32_MAX 2147483647
+#   define INT32_MAX 2147483647
 #endif
 #ifndef INT32_MIN
-#define INT32_MIN (-2147483647 - 1)
+#   define INT32_MIN (-2147483647 - 1)
 #endif
 
 #ifndef UINT8_MAX
-#define UINT8_MAX 0xff /* 255U */
+#   define UINT8_MAX 0xff /* 255U */
 #endif
 #ifndef UINT16_MAX
-#define UINT16_MAX 0xffff /* 65535U */
+#   define UINT16_MAX 0xffff /* 65535U */
 #endif
 #ifndef UINT32_MAX
-#define UINT32_MAX 0xffffffff  /* 4294967295U */
+#   define UINT32_MAX 0xffffffff  /* 4294967295U */
 #endif
 #ifdef __GNUC__
 #ifndef UINT64_MAX
-#define UINT64_MAX 0xffffffffffffffffULL /* 18446744073709551615ULL */
+#   define UINT64_MAX 0xffffffffffffffffULL /* 18446744073709551615ULL */
 #endif
 #else
-#define UINT64_MAX 0xffffffffffffffffui64 /* 18446744073709551615ULL */
+#   define UINT64_MAX 0xffffffffffffffffui64 /* 18446744073709551615ULL */
 #endif
 
 #ifdef WIN32
@@ -129,9 +129,9 @@ extern "C"
 #    define offsetof(T, F) ((unsigned int)((char *)&((T *)0)->F))
 #endif
 
-#define INTMAX_MIN      (-INT64_C(9223372036854775807)-1)
-#define INTMAX_MAX      (INT64_C(9223372036854775807))
-#define UINTMAX_MAX     (UINT64_C(18446744073709551615))
+#define INTMAX_MIN  (-INT64_C(9223372036854775807)-1)
+#define INTMAX_MAX  (INT64_C(9223372036854775807))
+#define UINTMAX_MAX (UINT64_C(18446744073709551615))
 
 #ifndef WIN32
 #define BYTE unsigned char
