@@ -29,7 +29,7 @@ PNAME = falabaac
 VERSION_MAJOR = 2
 VERSION_MINOR = 1
 VERSION_RELEASE = 1
-PREFIX = /usr/local
+PREFIX = ~/.local
 
 ARCH =
 DEBUG =
@@ -40,8 +40,9 @@ ifeq ($(ARCH), ARM)
 	CROSS = arm-linux-
 endif
 
-CC = $(CROSS)gcc
-CFLAGS = -I. -std=c99
+# CC = $(CROSS)gcc
+CC = clang
+CFLAGS = -I. -std=c11
 
 ifeq ($(ARCH), ARM)
 	CFLAGS += -D__ARM__ -mcpu=arm9tdmi
@@ -66,12 +67,15 @@ CFLAGS      += -I./src -I$(INCLUDEDIR)
 TARGET       = $(PNAME)
 TLIBA        = lib$(PNAME).a
 TLIBSO       = lib$(PNAME).so.$(VERSION_MAJOR)
+MANFILES     = $(shell ls ./man/man1/*)
+MANGZFILES   = $(patsubst %,%.gz,$(MANFILES))
 CSRCFILES    = $(shell ls ./src/frontend/*.c)
 CSRCLIBFILES = $(shell ls ./src/lib$(PNAME)/*.c)
 COBJFILES    = $(patsubst %.c,%.o,$(CSRCFILES))
 COBJLIBFILES = $(patsubst %.c,%.o,$(CSRCLIBFILES))
 RM           = rm -f
 INSTALL      = install
+GZ           = gzip -kf
 
 LDFLAGS += -lm -lpthread -lrt -L. -l$(PNAME)
 ifeq ($(ARCH),ARCH_ARM)
@@ -85,7 +89,7 @@ else
 endif
 endif
 
-all: $(TLIBA) $(TLIBSO) $(TARGET)
+all: $(TLIBA) $(TLIBSO) $(TARGET) $(MANGZFILES)
 
 $(TLIBA) : $(COBJLIBFILES)
 	$(AR) $(ARFLAG) $@ $^
@@ -96,8 +100,11 @@ $(TLIBSO) : $(COBJLIBFILES)
 $(TARGET) : $(COBJFILES) $(TLIB)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
+$(MANGZFILES) : $(MANFILES)
+	$(GZ) $<
+
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
+	$(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $< -Wno-unused-function
 
 clean : 
 	$(RM) $(COBJFILES)
@@ -105,6 +112,7 @@ clean :
 	$(RM) $(TLIBA)
 	$(RM) $(TLIBSO)
 	$(RM) $(TARGET)
+	$(RM) $(MANGZFILES)
 
 install :
 	$(INSTALL) -d $(PREFIX)/lib
@@ -115,6 +123,8 @@ install :
 	$(INSTALL) -d $(PREFIX)/include
 	$(INSTALL) -m 0644 ./src/include/fa_aacapi.h $(PREFIX)/include/
 	$(INSTALL) -m 0644 ./src/include/fa_inttypes.h $(PREFIX)/include/
+	$(INSTALL) -d $(PREFIX)/share/man/man1
+	$(INSTALL) -m 0644 $(MANGZFILES) $(PREFIX)/share/
 
 uninstall :
 	$(RM) $(PREFIX)/lib/$(TLIBA)
@@ -122,3 +132,4 @@ uninstall :
 	$(RM) $(PREFIX)/bin/$(TARGET)
 	$(RM) $(PREFIX)/include/fa_aacapi.h
 	$(RM) $(PREFIX)/include/fa_inttypes.h
+	$(RM) $(PREFIX)/share/man/man1/$(TARGET)*gz
