@@ -21,7 +21,6 @@
   time    : 2019/07/17
   author  : luolongzhi ( falab2012@gmail.com luolongzhi@gmail.com )
   code URL: https://github.com/Sound-Linux-More/falabaac
-
 */
 
 #include <stdio.h>
@@ -53,33 +52,29 @@ int   opt_time_resolution_first = 0;
 int   opt_vbr_enable = 1;
 
 const char *usage =
-    "\n\n"
     "Usage: falabaac <-i> <inputfile> [options] ...\n"
-    "\n\n"
+    "\n"
     "See also:\n"
     "    -h, --help               for help on ...\n"
     /*"    --long-help          for a description of all options for ...\n"*/
-    "    -L, --license            for the license terms for falab.\n\n"
+    "    -L, --license            for the license terms for falab.\n"
+    "\n"
     "Simple example:\n"
-    "       falabaac -i test.wav\n"
-    "       falabaac -i test.wav -o test_out.aac\n"
-    "       falabaac -i test.wav -q 1.0\n"
-    "       falabaac -i test.wav -b 128\n"
-    "       falabaac -i test.wav -b 128 -w 15\n"
-    "       falabaac -i test.wav -o test_out.aac -b 96\n"
-    "       falabaac -i test.wav -l 3\n"
-    "\n\n";
+    "    falabaac -i test.wav\n"
+    "    falabaac -i test.wav -o test_out.aac\n"
+    "    falabaac -i test.wav -q 1.0\n"
+    "    falabaac -i test.wav -b 128\n"
+    "    falabaac -i test.wav -b 128 -w 15\n"
+    "    falabaac -i test.wav -o test_out.aac -b 96\n"
+    "    falabaac -i test.wav -l 3\n";
 
 const char *default_set =
-    "\n\n"
     "No argument input, run by default settings\n"
     "    --bitrate    [128 kbps]\n"
     "    --speedlevel [1]\n"
-    "    --bandwidth  [auto]\n"
-    "\n\n";
+    "    --bandwidth  [auto]\n";
 
 const char *short_help =
-    "\n\n"
     "Usage: falabaac <-i> <inputfile> [options] ...\n"
     "Options:\n"
     "    -i <inputfile>             Set input filename                               [eg: test.wav]\n"
@@ -93,11 +88,9 @@ const char *short_help =
     "    -t <time_resolution>       Set the encoder use time resolution first(0 or 1)[eg: -t 1]\n"
     "    --help                     Show this abbreviated help.\n"
     "    --long-help                Show complete help.\n"
-    "    --license                  For the license terms of falab.\n"
-    "\n\n";
+    "    --license                  For the license terms of falab.\n";
 
 const char *long_help =
-    "\n\n"
     "Usage: falabaac <-i> <inputfile>  [options] ...\n"
     "Options:\n"
     "    -i <inputfile>             Set input filename                               [eg: test.wav]\n"
@@ -120,11 +113,9 @@ const char *long_help =
     "    --speedlevel <l>           Set the speed level(1 is slow but good quality, 6 is fastest but less quality)\n"
     "    --bandwidth  <w>           Set band width, only 5-24 (kHz) valid. 20kHz when bitrate >=96kbps\n"
     "    --lfeenable  <e>           Set the LFE encode enable\n"
-    "    --time_resolution<t>       Set the encoding time resolution first, use short window\n"
-    "\n\n";
+    "    --time_resolution<t>       Set the encoding time resolution first, use short window\n";
 
 const char *all_help =
-    "\n\n"
     "Usage: falabaac <-i> <inputfile>  [options] ...                                                            \n"
     "                                                                                                           \n"
     "Recommend command line:                                                                                    \n"
@@ -181,12 +172,9 @@ const char *all_help =
     "                                                                                                           \n"
     "    --help                     Show this abbreviated help.                                                 \n"
     "                                                                                                           \n"
-    "    --license                  for the license terms for falab.                                            \n"
-    "                                                                                                           \n"
-    "\n\n";
+    "    --license                  for the license terms for falab.                                            \n";
 
 const char *license =
-    "\n\n"
     "**************************************  WARN  *******************************************\n"
     "*    Please note that the use of this software may require the payment of patent        *\n"
     "*    royalties. You need to consider this issue before you start building derivative    *\n"
@@ -194,7 +182,6 @@ const char *license =
     "*                                                                                       *\n"
     "*                YOU ARE SOLELY RESPONSIBLE FOR YOUR OWN ACTIONS!                       *\n"
     "*****************************************************************************************\n"
-    "\n"
     "\n"
     "falab - free algorithm lab \n"
     "Copyright (C) 2012 luolongzhi (Chengdu, China)\n"
@@ -216,22 +203,23 @@ const char *license =
     "falab src code is based on the signal processing theroy, optimize theroy, ISO ref, etc.\n"
     "The purpose of falab is building a free algorithm lab to help people to learn\n"
     "and study algorithm, exchanging experience.    ---luolongzhi 2012.07.08\n"
-    "                                                                                    \n"
-    "code URL: http://code.google.com/p/falab/\n "
-    "\n";
+    "\n"
+    "code URL: http://code.google.com/p/falab/\n";
 
-static void fa_printopt()
-{
+static void fa_printopt() {
     FA_PRINT("NOTE: configuration is below\n");
     FA_PRINT("NOTE: inputfile = %s\n", opt_inputfile);
     FA_PRINT("NOTE: outputfile= %s\n", opt_outputfile);
     FA_PRINT("NOTE: vbr switch= %d \n", opt_vbrflag);
-    if (opt_vbrflag)
+
+    if (opt_vbrflag) {
         FA_PRINT("NOTE: quality   = %f \n", opt_quality);
-    else
+    } else {
         FA_PRINT("NOTE: bitrate   = %d kbps\n", opt_bitrate);
+    }
+
     FA_PRINT("NOTE: speed lev = %d\n", opt_speedlevel);
-    /*FA_PRINT("NOTE: timers    = %d\n", opt_time_resolution_first);*/
+    // FA_PRINT("NOTE: timers    = %d\n", opt_time_resolution_first);
 }
 
 /**
@@ -239,17 +227,14 @@ static void fa_printopt()
  *
  * @return: 0 if success, -1 if error
  */
-static int fa_checkopt(int argc)
-{
+static int fa_checkopt(int argc) {
 
-    if(argc < 3)
-    {
+    if (argc < 3) {
         FA_PRINT_ERR("FAIL: input wav file should input, wav file should be 16bits per sample\n");
         return -1;
     }
 
-    if (strlen(opt_outputfile) == 0)
-    {
+    if (strlen(opt_outputfile) == 0) {
         char tmp[256];
         char *t = strrchr(opt_inputfile, '.');
         int l = t ? strlen(opt_inputfile) - strlen(t) : strlen(opt_inputfile);
@@ -261,33 +246,29 @@ static int fa_checkopt(int argc)
         sprintf(opt_outputfile, "%s.aac", tmp);
     }
 
-    if (strlen(opt_inputfile) == 0 || strlen(opt_outputfile) == 0)
-    {
+    if (strlen(opt_inputfile) == 0 || strlen(opt_outputfile) == 0) {
         FA_PRINT_ERR("FAIL: input and output file should input\n");
         return -1;
-
     }
+
     /*
-        if(opt_bitrate > 256 || opt_bitrate < 32)  {
-            FA_PRINT_ERR("FAIL: the bitrate is too large or too short, should be in [32000, 256000]\n");
-            return -1;
-        }
+    if (opt_bitrate > 256 || opt_bitrate < 32)  {
+        FA_PRINT_ERR("FAIL: the bitrate is too large or too short, should be in [32000, 256000]\n");
+        return -1;
+    }
     */
-    if (opt_speedlevel > 6 || opt_speedlevel < 1)
-    {
+    
+    if ( (opt_speedlevel > 6) || (opt_speedlevel < 1) ) {
         FA_PRINT_ERR("FAIL: out of range, should be in [1,6]\n");
         return -1;
     }
 
-    if (opt_bandwidth > (float)BW_MAXS || opt_bandwidth < 5.)
-    {
-        /*FA_PRINT_ERR("FAIL: out of range, should be in [5,24] kHz\n");*/
+    if ( (opt_bandwidth > (float) BW_MAXS) || (opt_bandwidth < 5.0) ) {
         FA_PRINT_ERR("FAIL: out of range, should be in [5,24] kHz\n");
         return -1;
     }
 
-    if (opt_quality > 1.5 || opt_quality < 0.1)
-    {
+    if ( (opt_quality > 1.5) || (opt_quality < 0.1) ) {
         FA_PRINT_ERR("FAIL: out of range, should be in [0.1,1.5]\n");
         return -1;
     }
@@ -305,16 +286,13 @@ static int fa_checkopt(int argc)
  *
  * @return: 0 if success, -1 if error(input value maybe not right)
  */
-int fa_parseopt(int argc, char *argv[])
-{
+int fa_parseopt(int argc, char *argv[]) {
     int ret;
     const char *die_msg = NULL;
 
-    while (1)
-    {
+    while (1) {
         static char * const     short_options = "hLi:o:b:q:v:l:w:e:t:";
-        static struct option    long_options[] =
-        {
+        static struct option    long_options[] = {
             { "help"       , 0, 0, 'h'},
             { "license"    , 0, 0, 'L'},
             { "input"      , 1, 0, 'i'},
@@ -331,180 +309,158 @@ int fa_parseopt(int argc, char *argv[])
         int c = -1;
         int option_index = 0;
 
-        c = getopt_long(argc, argv,
-                        short_options, long_options, &option_index);
+        c = getopt_long(argc, argv, short_options, long_options, &option_index);
 
-        if (c == -1)
-        {
+        if (c == -1) {
             break;
         }
 
-        if (!c)
-        {
+        if (!c) {
             die_msg = usage;
             break;
         }
 
-        switch (c)
-        {
-        case 'h':
-        {
-            /*die_msg = short_help;*/
-            die_msg = all_help;
-            break;
-        }
-        /*
-                    case 'H': {
-                          die_msg = long_help;
-                          break;
-                      }
-                      */
-        case 'L':
-        {
-            die_msg = license;
-            break;
-        }
-
-        case 'i':
-        {
-            if (sscanf(optarg, "%s", opt_inputfile) > 0)
-            {
-                FA_PRINT("SUCC: inputfile is %s\n", opt_inputfile);
-            }
-            else
-            {
-                FA_PRINT_ERR("FAIL: no inputfile\n");
-            }
-            break;
-        }
-
-        case 'o':
-        {
-            if (sscanf(optarg, "%s", opt_outputfile) > 0)
-            {
-                FA_PRINT("SUCC: outputfile is %s\n", opt_outputfile);
-            }
-            else
-            {
-                FA_PRINT_ERR("FAIL: no outputfile\n");
-            }
-            break;
-        }
-
-        case 'b':
-        {
-            unsigned int i;
-            if (sscanf(optarg, "%u", &i) > 0)
-            {
-                opt_bitrate = i;
-                opt_vbr_enable = 0;
-                FA_PRINT("SUCC: set bitrate = %u\n", opt_bitrate);
-
-            }
-            break;
-        }
-
-        case 'q':
-        {
-            float i;
-            if (sscanf(optarg, "%f", &i) > 0)
-            {
-                opt_quality = i;
-                FA_PRINT("SUCC: set quality = %f\n", opt_quality);
-            }
-            break;
-        }
-
-        case 'v':
-        {
-            unsigned int i;
-            if (sscanf(optarg, "%u", &i) > 0)
-            {
-                opt_vbrflag = i;
-                FA_PRINT("SUCC: set vbr mode = %u\n", opt_vbrflag);
-            }
-            break;
-        }
-
-        case 'l':
-        {
-            unsigned int i;
-            if (sscanf(optarg, "%u", &i) > 0)
-            {
-                opt_speedlevel = i;
-                FA_PRINT("SUCC: set speedlevel = %u\n", opt_speedlevel);
-            }
-            break;
-        }
-
-        case 'w':
-        {
-            /*unsigned int i;*/
-            float i;
-            if (sscanf(optarg, "%f", &i) > 0)
-            {
-                opt_bandwidth = i;
-                FA_PRINT("SUCC: set band_width = %f\n", opt_bandwidth);
-            }
-            break;
-        }
-
-        case 'e':
-        {
-            unsigned int i;
-            if (sscanf(optarg, "%u", &i) > 0)
-            {
-                opt_lfeenable = i;
-                if (opt_lfeenable != 0 && opt_lfeenable != 1)
-                {
-                    FA_PRINT("FAIL: lfe enable should be 0 or 1\n");
-                    exit(0);
+        switch (c) {
+            case 'h' :
+                // die_msg = short_help;
+                die_msg = all_help;
+                break;
+            /* case 'H' :
+                die_msg = long_help;
+                break; // */
+            case 'L' :
+                die_msg = license;
+                break;
+            case 'i' :
+                if (sscanf(optarg, "%s", opt_inputfile) > 0) {
+                    FA_PRINT("SUCC: inputfile is %s\n", opt_inputfile);
+                } else {
+                    FA_PRINT_ERR("FAIL: no inputfile\n");
                 }
-                FA_PRINT("SUCC: set lfe enable = %u\n", opt_lfeenable);
-            }
-            break;
-        }
 
-        case 't':
-        {
-            unsigned int i;
-            if (sscanf(optarg, "%u", &i) > 0)
-            {
-                opt_time_resolution_first = i;
-                if (opt_time_resolution_first != 0 && opt_time_resolution_first!= 1)
-                {
-                    FA_PRINT("FAIL: time_resolution enable should be 0 or 1\n");
-                    exit(0);
+                break;
+            case 'o' :
+                if (sscanf(optarg, "%s", opt_outputfile) > 0) {
+                    FA_PRINT("SUCC: outputfile is %s\n", opt_outputfile);
+                } else {
+                    FA_PRINT_ERR("FAIL: no outputfile\n");
                 }
-                FA_PRINT("SUCC: set time_resolution enable = %u\n", opt_time_resolution_first);
-            }
-            break;
-        }
 
-        case '?':
-        default:
-            die_msg = usage;
-            break;
+                break;
+            case 'b' : 
+                {
+                    unsigned int i;
+
+                    if (sscanf(optarg, "%u", &i) > 0) {
+                        opt_bitrate = i;
+                        opt_vbr_enable = 0;
+                        FA_PRINT("SUCC: set bitrate = %u\n", opt_bitrate);
+                    }
+                }
+
+                break;
+            case 'q' :
+                {
+                    float i;
+
+                    if (sscanf(optarg, "%f", &i) > 0) {
+                        opt_quality = i;
+                        FA_PRINT("SUCC: set quality = %f\n", opt_quality);
+                    }
+                }
+
+                break;
+            case 'v' :
+                {
+                    unsigned int i;
+
+                    if (sscanf(optarg, "%u", &i) > 0) {
+                        opt_vbrflag = i;
+                        FA_PRINT("SUCC: set vbr mode = %u\n", opt_vbrflag);
+                    }
+                }
+
+                break;
+            case 'l' :
+                {
+                    unsigned int i;
+
+                    if (sscanf(optarg, "%u", &i) > 0) {
+                        opt_speedlevel = i;
+                        FA_PRINT("SUCC: set speedlevel = %u\n", opt_speedlevel);
+                    }
+                }
+
+                break;
+            case 'w' :
+                {
+                    /*unsigned int i;*/
+                    float i;
+
+                    if (sscanf(optarg, "%f", &i) > 0) {
+                        opt_bandwidth = i;
+                        FA_PRINT("SUCC: set band_width = %f\n", opt_bandwidth);
+                    }
+                }
+
+                break;
+            case 'e' :
+                {
+                    unsigned int i;
+
+                    if (sscanf(optarg, "%u", &i) > 0) {
+                        opt_lfeenable = i;
+
+                        if (opt_lfeenable != 0 && opt_lfeenable != 1) {
+                            FA_PRINT("FAIL: lfe enable should be 0 or 1\n");
+                            exit(0);
+                        }
+
+                        FA_PRINT("SUCC: set lfe enable = %u\n", opt_lfeenable);
+                    }
+                }
+
+                break;
+            case 't' :
+                {
+                    unsigned int i;
+
+                    if (sscanf(optarg, "%u", &i) > 0) {
+                        opt_time_resolution_first = i;
+
+                        if (opt_time_resolution_first != 0 && opt_time_resolution_first!= 1) {
+                            FA_PRINT("FAIL: time_resolution enable should be 0 or 1\n");
+                            exit(0);
+                        }
+
+                        FA_PRINT("SUCC: set time_resolution enable = %u\n", opt_time_resolution_first);
+                    }
+                }
+
+                break;
+            case '?' :
+            default :
+                die_msg = usage;
+                break;
         }
     }
 
-    if(die_msg)
-    {
+    if (die_msg) {
         FA_PRINT("%s\n", die_msg);
         return -1;
     }
 
     /*check the input validity*/
     ret = fa_checkopt(argc);
-    if(ret)
-    {
+    if (ret) {
         die_msg = usage;
         FA_PRINT("%s\n", die_msg);
         return -1;
     }
 
-    if (opt_vbr_enable == 0)
+    if (opt_vbr_enable == 0) {
         opt_vbrflag = 0;
+    }
     /*print the settings*/
     fa_printopt();
 

@@ -152,8 +152,7 @@ int optopt = BAD_OPTION;
    of the value of `ordering'.  In the case of RETURN_IN_ORDER, only
    `--' can cause `getopt' to return EOF with `optind' != ARGC.  */
 
-static enum
-{
+static enum {
     REQUIRE_ORDER, PERMUTE, RETURN_IN_ORDER
 } ordering;
 
@@ -181,8 +180,7 @@ static char *my_index (const char *str, int chr);
 extern char *getenv ();
 #endif
 
-static int
-my_strlen (str)
+static int my_strlen (str)
 const char *str;
 {
     int n = 0;
@@ -191,8 +189,7 @@ const char *str;
     return n;
 }
 
-static char *
-my_index (str, chr)
+static char * my_index (str, chr)
 const char *str;
 int chr;
 {
@@ -206,7 +203,7 @@ int chr;
 }
 
 #endif              /* GNU C library.  */
-
+
 /* Handle permutation of arguments.  */
 
 /* Describe the part of ARGV that contains non-options that have
@@ -236,18 +233,15 @@ static int last_nonopt;
 */
 
 #if __STDC__ || defined(PROTO)
-static void exchange (char **argv);
+static void exchange(char *const argv[]);
 #endif
 
-static void
-exchange (argv)
-char **argv;
-{
+static void exchange(char *const argv[]) {
     char *temp, **first, **last;
 
     /* Reverse all the elements [first_nonopt, optind) */
-    first = &argv[first_nonopt];
-    last  = &argv[optind-1];
+    first = (char **) &argv[first_nonopt];
+    last  = (char **) &argv[optind-1];
     while (first < last)
     {
         temp = *first;
@@ -257,9 +251,9 @@ char **argv;
         last--;
     }
     /* Put back the options in order */
-    first = &argv[first_nonopt];
+    first = (char **) &argv[first_nonopt];
     first_nonopt += (optind - last_nonopt);
-    last  = &argv[first_nonopt - 1];
+    last  = (char **) &argv[first_nonopt - 1];
     while (first < last)
     {
         temp = *first;
@@ -270,9 +264,9 @@ char **argv;
     }
 
     /* Put back the non options in order */
-    first = &argv[first_nonopt];
+    first = (char **) &argv[first_nonopt];
     last_nonopt = optind;
-    last  = &argv[last_nonopt-1];
+    last  = (char **) &argv[last_nonopt-1];
     while (first < last)
     {
         temp = *first;
@@ -282,7 +276,7 @@ char **argv;
         last--;
     }
 }
-
+
 /* Scan elements of ARGV (whose length is ARGC) for option characters
    given in OPTSTRING.
 
@@ -339,15 +333,7 @@ char **argv;
    If LONG_ONLY is nonzero, '-' as well as '--' can introduce
    long-named options.  */
 
-int
-_getopt_internal (argc, argv, optstring, longopts, longind, long_only)
-int argc;
-char *const *argv;
-const char *optstring;
-const struct option *longopts;
-int *longind;
-int long_only;
-{
+int _getopt_internal(int argc, char *const *argv, const char *optstring, const struct option *longopts, int *longind, int long_only) {
     int option_index;
 
     optarg = 0;
@@ -673,31 +659,19 @@ int long_only;
     }
 }
 
-int
-getopt (argc, argv, optstring)
-int argc;
-char *const *argv;
-const char *optstring;
-{
+int getopt (int argc, char *const argv[], const char *optstring) {
     return _getopt_internal (argc, argv, optstring,
                              (const struct option *) 0,
                              (int *) 0,
                              0);
 }
 
-int
-getopt_long (argc, argv, options, long_options, opt_index)
-int argc;
-char *const *argv;
-const char *options;
-const struct option *long_options;
-int *opt_index;
-{
+int getopt_long (int argc, char *const argv[], const char* options, const struct option* long_options, int* opt_index) {
     return _getopt_internal (argc, argv, options, long_options, opt_index, 0);
 }
 
 #endif  /* _LIBC or not __GNU_LIBRARY__.  */
-
+
 #ifdef TEST
 
 /* Compile with -DTEST to make an executable for use in testing

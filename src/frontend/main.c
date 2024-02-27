@@ -47,7 +47,7 @@ TODO:
 #include <stdlib.h>
 #include <math.h>
 #include <memory.h>
-#include "fa_aacapi.h"
+#include "../include/fa_aacapi.h"
 #include "fa_wavfmt.h"
 #include "fa_parseopt.h"
 #include "fa_timeprofile.h"
@@ -86,27 +86,28 @@ int main(int argc, char *argv[])
     printf("*                                                          *\n");
     printf("*              falabaac encoder v2.1.1                     *\n");
     printf("*                                                          *\n");
-    printf("*   Copyright (C) 2012 luolongzhi ÂÞÁúÖÇ (Chengdu China)   *\n");
+    printf("*   Copyright (C) 2012 luolongzhi ç½—é¾™æ™º (Chengdu China)   *\n");
     printf("*                    Free Software                         *\n");
     printf("*                                                          *\n");
     printf("*             Email: luolongzhi@gmail.com                  *\n");
     printf("*                                                          *\n");
-    printf("************************************************************\n\n");
+    printf("************************************************************\n");
 
-    /*parse the argument*/
+    /*parse arguments*/
     ret = fa_parseopt(argc, argv);
-    if(ret) return -1;
+    if (ret) return -1;
 
     /*open the dest and src file*/
-    if ((destfile = fopen(opt_outputfile, "w+b")) == NULL)
-    {
+    if ((destfile = fopen(opt_outputfile, "w+b")) == NULL) {
         printf("output file can not be opened\n");
+
         return 0;
     }
-    if ((sourcefile = fopen(opt_inputfile, "rb")) == NULL)
-    {
+
+    if ((sourcefile = fopen(opt_inputfile, "rb")) == NULL) {
         printf("input file can not be opened;\n");
         fclose(destfile);
+
         return 0;
     }
 
@@ -119,8 +120,7 @@ int main(int argc, char *argv[])
     /*#define TEST_MEMLEAK */
 
 #ifdef TEST_MEMLEAK
-    while (1)
-    {
+    while (1) {
         static int testcnt = 0;
 #endif
 
@@ -128,17 +128,19 @@ int main(int argc, char *argv[])
         h_aacenc = fa_aacenc_init(sample_rate, opt_bitrate, chn_num, opt_quality, opt_vbrflag,
                                   FA_AACENC_MPEG_VER_DEF , FA_AACENC_OBJ_TYPE_DEF, opt_lfeenable,
                                   opt_bandwidth, opt_speedlevel, opt_time_resolution_first);
-        if (!h_aacenc)
-        {
+        
+        if (!h_aacenc) {
             printf("initial failed, maybe configuration is not proper!\n");
             fclose(sourcefile);
             fclose(destfile);
+
             return -1;
         }
 
 #ifdef TEST_MEMLEAK
-        if (h_aacenc)
+        if (h_aacenc) {
             fa_aacenc_uninit(h_aacenc);
+        }
 
 #ifdef WIN32
         Sleep(50);
@@ -147,7 +149,6 @@ int main(int argc, char *argv[])
 #endif
         testcnt++;
         printf("testcnt=%d\n", testcnt);
-
     }
 #endif
 
@@ -155,16 +156,18 @@ int main(int argc, char *argv[])
     FA_CLOCK_START(1);
 
     /*main loop of encode*/
-    while(1)
-    {
-        if(is_last)
+    while(1) {
+        if (is_last) {
             break;
+        }
 
         /*read the raw sample from the wav file*/
         memset(wavsamples_in, 0, 2*AAC_FRAME_SIZE*chn_num);   //2 means the 2 bytes per real sample
         read_len = fread(wavsamples_in, 2, AAC_FRAME_SIZE*chn_num, sourcefile);
-        if(read_len < (AAC_FRAME_SIZE*chn_num))
+
+        if (read_len < (AAC_FRAME_SIZE*chn_num)) {
             is_last = 1;
+        }
 
         /*analysis and encode*/
         fa_aacenc_encode(h_aacenc, (unsigned char *)wavsamples_in, chn_num*2*read_len, aac_buf, &aac_out_len);
